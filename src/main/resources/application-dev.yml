@@ -1,0 +1,17 @@
+server:
+  port: 8081
+
+app:
+  mail:
+    enabled: false
+    retry-count: 1
+
+  locale:
+    default-locale: kk
+    supported:
+      - kk
+      - ru
+
+logging:
+  level:
+    kz.iitu: DEBUG
