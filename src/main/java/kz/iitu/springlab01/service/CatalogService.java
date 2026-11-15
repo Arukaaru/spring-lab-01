@@ -1,11 +1,14 @@
+
 package kz.iitu.springlab01.service;
 
 import kz.iitu.springlab01.audit.Audited;
 import kz.iitu.springlab01.cache.SimpleCache;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,16 +24,21 @@ public class CatalogService {
     @Lazy
     private CatalogService self;
 
+    // Reading is available to USER and ADMIN
     @SimpleCache
     public String findById(long id) {
 
-        log.info("[SERVICE] findById target executed for id={}", id);
+        log.info(
+                "[SERVICE] findById target executed for id={}",
+                id
+        );
 
         sleep(50);
 
         return "Item no. " + id;
     }
 
+    // List catalogue items
     @Audited(action = "CATALOG_LIST", logArguments = true)
     public List<String> findAll(int limit) {
 
@@ -41,6 +49,8 @@ public class CatalogService {
                 .toList();
     }
 
+    // Only ADMIN can remove catalogue items
+    @PreAuthorize("hasRole('ADMIN')")
     @Audited(action = "CATALOG_REMOVE")
     public String remove(long id) {
 
@@ -53,6 +63,8 @@ public class CatalogService {
         return "Removed item no. " + id;
     }
 
+    // Only ADMIN can execute repeated removal
+    @PreAuthorize("hasRole('ADMIN')")
     public String removeTwice(long id) {
 
         String first = self.remove(id);
