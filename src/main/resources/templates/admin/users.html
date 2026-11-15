@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Administration - Users</title>
+
+  <link rel="stylesheet"
+        th:href="@{/css/app.css}">
+</head>
+
+<body>
+
+<div style="text-align: right; padding: 15px 30px;">
+
+  Signed in as:
+  <strong sec:authentication="name">admin</strong>
+
+  <form th:action="@{/logout}"
+        method="post"
+        style="display: inline; margin-left: 20px;">
+
+    <button type="submit">Logout</button>
+
+  </form>
+</div>
+
+<h1>Administration</h1>
+
+<h2 style="text-align: center;">
+  Registered Users
+</h2>
+
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Username</th>
+    <th>Roles</th>
+    <th>Status</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr th:each="user : ${users}">
+
+    <td th:text="${user.id}">1</td>
+
+    <td th:text="${user.username}">
+      username
+    </td>
+
+    <td th:text="${user.roles}">
+      [USER]
+    </td>
+
+    <td th:text="${user.enabled ? 'Enabled' : 'Disabled'}">
+      Enabled
+    </td>
+
+  </tr>
+  </tbody>
+</table>
+
+<p style="text-align: center; margin-top: 30px;">
+
+  <a th:href="@{/books}">
+    Back to Catalogue
+  </a>
+
+</p>
+
+</body>
+</html>
